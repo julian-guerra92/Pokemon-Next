@@ -10,7 +10,7 @@ export const NoFavorites = () => {
          justifyContent: 'center',
          alignSelf: 'center'
       }}>
-         <Text h1>No Favorite Pokemons</Text>
+         <Text h1 css={{ textAlign: 'center' }}>No Favorite Pokemons</Text>
          <Image
             src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/25.svg"
             width={250}
