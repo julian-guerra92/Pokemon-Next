@@ -118,17 +118,29 @@ export const getStaticPaths: GetStaticPaths = async (ctx) => {
       paths: data.results.map(({ name }) => ({
          params: { name }
       })),
-      fallback: false
+      // fallback: false //*Usado para casos donde la página no exitse y se quiere regresas un código 404
+      fallback: 'blocking' //*Usado para generar el contenido aunque no se encuentre construido
    }
 }
 
 //*Método para crear el contenido estático que va a ir a las props de la página que va a ser renderizada
 export const getStaticProps: GetStaticProps = async ({ params }) => {
    const { name } = params as { name: string };
+   const pokemon = await getPokemonInfo(name);
+   //*Se debe hacer validación de la existecia del pokemon para evitar que la aplicación rompa
+   if(!pokemon) {
+      return {
+         redirect: {
+            destination: '/',
+            permanent: false
+         }
+      }
+   }
    return {
       props: {
-         pokemon: await getPokemonInfo(name)
-      }
+         pokemon
+      },
+      revalidate: 86400, //*Revalida el contenido de la paǵina en este tiempo determinado
    }
 }
 
